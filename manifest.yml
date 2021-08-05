@@ -1,0 +1,49 @@
+modules:
+  jira:customFieldType:
+    - key: contextual-objet-type-currency
+      name: contextual-objet-type
+      description: Custom field type.
+      icon: https://developer.atlassian.com/platform/forge/images/icons/issue-countries-icon.svg
+      type: object
+      formatter:
+        expression: "`${value.currency}`"
+      readOnly: false
+      function: main
+      edit:
+        function: edit
+      contextualConfiguration:
+        function: configureContext
+      schema:
+        properties:
+          prop1:
+            amount: number
+            currency: string
+          prop2:
+            amount: number
+            currency: string
+          prop3:
+            amount: number
+            currency: string
+          prop4:
+            amount: number
+            currency: string
+          prop5:
+            amount: number
+            currency: string
+          currency: 
+              type: string
+              searchAlias: Currency
+  function:
+    - key: main
+      handler: index.runView
+    - key: edit
+      handler: index.runEdit
+    - key: configureContext
+      handler: index.runContextualConfiguration
+app:
+  id: ari:cloud:ecosystem::app/cb3df0be-7eb8-427b-92c2-e5b799a921de
+  name: contextual-objet-type
+permissions:
+  scopes:
+    - storage:app
+    - manage:jira-configuration
