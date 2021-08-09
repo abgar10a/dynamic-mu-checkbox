@@ -1,7 +1,7 @@
 modules:
   jira:customFieldType:
-    - key: contextual-objet-type-currency
-      name: contextual-objet-type
+    - key: forge-currency-exchange
+      name: Currency Exchange
       description: Custom field type.
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-countries-icon.svg
       type: object
