@@ -6,7 +6,7 @@ import ForgeUI, {
     useState
   } from "@forge/ui";
   import api,{ storage } from '@forge/api';
-  import { DEFAULT_CONFIGURATION, DEFAULT_CONFIG_CONFIGURATION, STORAGE_KEY_PREFIX  } from '../data/data'
+  import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
   import { setOutcomeProps, currencyConversion, getCustomFieldContext } from '../utils/utils'
 
 
@@ -24,7 +24,7 @@ import ForgeUI, {
     const [customFieldContextFormValues] = useState(setCustomFieldContextFormValues(fieldValue));
 
     if(!configuration) {
-      configuration = DEFAULT_CONFIG_CONFIGURATION.configuration;
+      configuration = DEFAULT_CONTEXT_CONFIG.configuration;
       setStorgaeData(DEFAULT_CONFIGURATION);
     }
 
@@ -32,8 +32,8 @@ import ForgeUI, {
     if(!!formValue) {
       const outcome = await setOutcomeProps(localStorageData ? localStorageData.rowsAmount : DEFAULT_CONFIGURATION.rowsAmount, formValue);
       currencyConversion(outcome, 
-        configuration ? configuration.provision : DEFAULT_CONFIG_CONFIGURATION.configuration.provision, 
-        configuration ? configuration.currencyExchangeCourses : DEFAULT_CONFIG_CONFIGURATION.configuration.currencyExchangeCourses);
+        configuration ? configuration.provision : DEFAULT_CONTEXT_CONFIG.configuration.provision, 
+        configuration ? configuration.currencyExchangeCourses : DEFAULT_CONTEXT_CONFIG.configuration.currencyExchangeCourses);
       return outcome;
     } else return {}
   };

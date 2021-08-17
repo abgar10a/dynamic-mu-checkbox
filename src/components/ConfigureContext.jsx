@@ -1,26 +1,32 @@
 import ForgeUI, {
     useProductContext,
-    CustomFieldTypeContextualConfiguration,
+    CustomFieldContextConfig,
     TextField,
     Table,
     Row,
     Cell,
     Head,
     Text,
-    useState
+    useState,
+    useEffect
   } from "@forge/ui";
-  import { DEFAULT_CONFIG_CONFIGURATION  } from '../data/data';
+  import { DEFAULT_CONTEXT_CONFIG  } from '../data/data';
   import { getCustomFieldContext, validateMaxRowsAmount } from '../utils/utils';
 
     export const ConfigureContext = () => {
     const { extensionContext: { fieldId }} = useProductContext();
 
-    const [customFieldContext] = useState(getCustomFieldContext(fieldId));
-    let [{configuration}] = customFieldContext;
+    const [customFieldContext, setCustomFieldContext] = useState(DEFAULT_CONTEXT_CONFIG);
+    const {configuration: {provision, maxCurrencyCalculationRows, currencyExchangeCourses}} = customFieldContext;
 
-    if(!configuration) {
-      configuration = DEFAULT_CONFIG_CONFIGURATION.configuration
-    }
+    console.log(customFieldContext)
+    
+    useEffect(() => {
+      async () => await setCustomFieldContext(getCustomFieldContext(fieldId))
+    }, [])
+    
+    
+    console.log(provision);
     
     const onSubmit = (formData) => {
       validateMaxRowsAmount(formData);
@@ -55,18 +61,18 @@ import ForgeUI, {
     };
   
     return (
-      <CustomFieldTypeContextualConfiguration onSubmit={onSubmit}>
-        <TextField
-          type="number"
+      <CustomFieldContextConfig onSubmit={onSubmit}>
+      <TextField
+        type="number"
           name="provision"
           label="Bank provision (%)"
-          defaultValue={configuration.provision}
+          defaultValue={provision}
         />
         <TextField
           type="number"
           name="maxRowsAmount"
           label="Maximum amount of currency"
-          defaultValue={configuration.maxCurrencyCalculationRows}
+          defaultValue={maxCurrencyCalculationRows}
         />
         <Table children>
           <Head children>
@@ -75,7 +81,7 @@ import ForgeUI, {
             </Cell>
           </Head>
           {
-            configuration.currencyExchangeCourses.map((e) => (
+            currencyExchangeCourses.map((e) => (
               <Row children>
                 <Cell>
                   <TextField
@@ -88,6 +94,6 @@ import ForgeUI, {
               </Row>
             ))}
         </Table>
-      </CustomFieldTypeContextualConfiguration>
+      </CustomFieldContextConfig>
     );
 };

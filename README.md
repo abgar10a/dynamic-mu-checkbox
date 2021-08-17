@@ -88,7 +88,6 @@ that implements the app context configuration.
 
 ## Modules used in the app
 
-
 - [`CustomField`](https://developer.atlassian.com/platform/forge/ui-kit-components/custom-field/) component
 - [`CustomFieldEdit`](https://developer.atlassian.com/platform/forge/ui-kit-components/custom-field-edit/) component
 - [`Button`](https://developer.atlassian.com/platform/forge/ui-components/button) component

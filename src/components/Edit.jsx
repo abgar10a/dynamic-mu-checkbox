@@ -8,7 +8,7 @@ import ForgeUI, {
   import api,{ storage } from '@forge/api';
   import { TableElement } from "./Table";
   import { SelectElement } from './Select';
-  import { DEFAULT_CONFIGURATION, DEFAULT_CONFIG_CONFIGURATION, STORAGE_KEY_PREFIX  } from '../data/data'
+  import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
   import { getCustomFieldContext, setDataProviderRows } from './../utils/utils';
   
 export const Edit = () => {
@@ -26,7 +26,7 @@ export const Edit = () => {
     let [{configuration}] = customFieldContext;
 
     if(!configuration) {
-      configuration = DEFAULT_CONFIG_CONFIGURATION.configuration
+      configuration = DEFAULT_CONTEXT_CONFIG.configuration
     }
 
     const addRow = () => {

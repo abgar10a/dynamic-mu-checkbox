@@ -33,8 +33,7 @@ export const DEFAULT_CONFIGURATION = {
   },
 };
 
-export const DEFAULT_CONFIG_CONFIGURATION = {
-  configuration: {
+export const DEFAULT_CONTEXT_CONFIG = {
     provision: 0,
     maxCurrencyCalculationRows: 5,
     currencyExchangeCourses: [
@@ -59,7 +58,6 @@ export const DEFAULT_CONFIG_CONFIGURATION = {
         exchangeValue: 0.91,
       },
     ],
-  }
 }
 
 export const maxRowsAmounts = {

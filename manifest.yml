@@ -11,7 +11,7 @@ modules:
       function: main
       edit:
         function: edit
-      contextualConfiguration:
+      contextConfig:
         function: configureContext
       schema:
         properties:
