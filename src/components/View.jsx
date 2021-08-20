@@ -3,7 +3,8 @@ import ForgeUI, {
     Fragment,
     Text,
     useProductContext,
-    useState
+    useState,
+    useEffect
   } from "@forge/ui";
   import api,{ storage } from '@forge/api';
   import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
@@ -19,21 +20,15 @@ import ForgeUI, {
     const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`) || DEFAULT_CONFIGURATION);
 
     const [localStorageData] = useState(getStorageData());
-    const [customFieldContext] = useState(getCustomFieldContext(fieldId));
-    let [{configuration}] = customFieldContext;
-    const [customFieldContextFormValues] = useState(setCustomFieldContextFormValues(fieldValue));
-
-    if(!configuration) {
-      configuration = DEFAULT_CONTEXT_CONFIG.configuration;
-      setStorgaeData(DEFAULT_CONFIGURATION);
-    }
+    const [customFieldContext, setCustomFieldContext] = useState(async () => await getCustomFieldContext(fieldId) || DEFAULT_CONTEXT_CONFIG);
+    const [{configuration: {provision, currencyExchangeCourses}}] = customFieldContext;
+    const [customFieldContextFormValues] = useState(async () => await setCustomFieldContextFormValues(fieldValue));
+    const {userCurrency: {converted, currency, convertedProvision}} = customFieldContextFormValues;
 
   async function setCustomFieldContextFormValues(formValue) {
     if(!!formValue) {
       const outcome = await setOutcomeProps(localStorageData ? localStorageData.rowsAmount : DEFAULT_CONFIGURATION.rowsAmount, formValue);
-      currencyConversion(outcome, 
-        configuration ? configuration.provision : DEFAULT_CONTEXT_CONFIG.configuration.provision, 
-        configuration ? configuration.currencyExchangeCourses : DEFAULT_CONTEXT_CONFIG.configuration.currencyExchangeCourses);
+      currencyConversion(outcome, provision, currencyExchangeCourses);
       return outcome;
     } else return {}
   };
@@ -41,13 +36,13 @@ import ForgeUI, {
     return (
       <CustomField>
         <Fragment>
-          {customFieldContextFormValues && customFieldContextFormValues.userCurrency ? (
-            <Text>Total money: {customFieldContextFormValues.userCurrency.converted} {customFieldContextFormValues.userCurrency.currency}</Text>
+          {converted ? (
+            <Text>Total money: {converted} {currency}</Text>
           ) : (
             <Text>No values yet</Text>
           )}
-           {customFieldContextFormValues && customFieldContextFormValues.userCurrency ? (
-            <Text>Net summ: {customFieldContextFormValues.userCurrency.convertedProvision} {customFieldContextFormValues.userCurrency.currency}</Text>
+           {convertedProvision ? (
+            <Text>Net summ: {convertedProvision} {currency}</Text>
           ) : (
             null
           )}

@@ -10,24 +10,23 @@ import ForgeUI, {
     useState,
     useEffect
   } from "@forge/ui";
-  import { DEFAULT_CONTEXT_CONFIG  } from '../data/data';
+  import { DEFAULT_CONTEXT_CONFIG } from '../data/data';
   import { getCustomFieldContext, validateMaxRowsAmount } from '../utils/utils';
 
     export const ConfigureContext = () => {
     const { extensionContext: { fieldId }} = useProductContext();
 
-    const [customFieldContext, setCustomFieldContext] = useState(DEFAULT_CONTEXT_CONFIG);
-    const {configuration: {provision, maxCurrencyCalculationRows, currencyExchangeCourses}} = customFieldContext;
+    const [customFieldContext] = useState(getCustomFieldContext(fieldId));
+    let [{configuration}] = customFieldContext;
 
-    console.log(customFieldContext)
-    
-    useEffect(() => {
-      async () => await setCustomFieldContext(getCustomFieldContext(fieldId))
-    }, [])
-    
-    
-    console.log(provision);
-    
+
+    if(!configuration) {
+      configuration = DEFAULT_CONTEXT_CONFIG.configuration
+    }
+
+    console.log(configuration);
+    console.log(getCustomFieldContext(fieldId));
+
     const onSubmit = (formData) => {
       validateMaxRowsAmount(formData);
       return {
@@ -66,13 +65,13 @@ import ForgeUI, {
         type="number"
           name="provision"
           label="Bank provision (%)"
-          defaultValue={provision}
+          defaultValue={configuration.provision}
         />
         <TextField
           type="number"
           name="maxRowsAmount"
           label="Maximum amount of currency"
-          defaultValue={maxCurrencyCalculationRows}
+          defaultValue={configuration.maxCurrencyCalculationRows}
         />
         <Table children>
           <Head children>
@@ -80,8 +79,7 @@ import ForgeUI, {
               <Text children>Value compared to USD</Text>
             </Cell>
           </Head>
-          {
-            currencyExchangeCourses.map((e) => (
+          {configuration.currencyExchangeCourses.map((e) => (
               <Row children>
                 <Cell>
                   <TextField
