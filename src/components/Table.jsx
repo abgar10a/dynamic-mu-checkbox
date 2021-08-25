@@ -10,12 +10,10 @@ import ForgeUI, {
     Button
   } from "@forge/ui";
 import { formValueObjectTransform } from '../utils/utils';
-export const TableElement = ({dataProvider, currencyExchangeCourses, fieldValue}) => {
+export const TableElement = ({dataProvider, currencyExchangeCourses, fieldValue, deleteRow}) => {
 
   const converted = formValueObjectTransform(fieldValue);
   converted.pop();
-
-  console.log(dataProvider);
 
 return <Table children>
     <Head children>

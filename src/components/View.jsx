@@ -15,18 +15,15 @@ export const View = () => {
     platformContext: { projectKey }
   } = useProductContext();
 
+  const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`));
   const setStorageData = async (projectConfig) => await storage.set(`${STORAGE_KEY_PREFIX}_${projectKey}`, projectConfig);
-  const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`) || DEFAULT_CONFIGURATION);
 
-  const [localStorageData, setLocalStorageData] = useState(setStorageData());
+  const [localStorageData, setLocalStorageData] = useState(getStorageData());
   const [customFieldContext] = useState(getCustomFieldContext(fieldId));
   let [{configuration}] = customFieldContext;
 
-  console.log(localStorageData);
-
   if(!configuration) {
     configuration = DEFAULT_CONTEXT_CONFIG.configuration
-    getStorageData(DEFAULT_CONFIGURATION);
   }
   const [customFieldContextFormValues] = useState(setCustomFieldContextFormValues(fieldValue));
 

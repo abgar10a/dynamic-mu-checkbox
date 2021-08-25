@@ -5,8 +5,6 @@ import ForgeUI, {
     ButtonSet,
     useState,
     Text,
-    useEffect, 
-
   } from "@forge/ui";
   import api,{ storage } from '@forge/api';
   import { TableElement } from "./Table";
@@ -32,7 +30,6 @@ import ForgeUI, {
       configuration = DEFAULT_CONTEXT_CONFIG.configuration
     }
 
-
     const addRow = () => {
       let rowsSetter = localStorageData.rowsAmount;
       if(localStorageData.rowsAmount >= configuration.maxCurrencyCalculationRows) { 
@@ -45,30 +42,26 @@ import ForgeUI, {
     }
 
     const deleteRow = (index) => {
-      let rowsSetter = localStorageData;
-      rowsSetter.rowsData = rowsSetter.rowsData.filter((e,i) => i !== index ? e : null);
-      console.log(rowsSetter);
-      // setStorageDataRows(rowsSetter)
-    } 
-  
+      let localStorageCopy = localStorageData;
+      localStorageCopy.rowsData = localStorageCopy.rowsData.filter((e,i) => i !== index);
+      setLocalStorageData(localStorageCopy)
+    }
+
     const deleteAllRows = () => {
       const rowsData = setDataProviderRows(1);
       setStorageDataRows(rowsData);
     }
 
     const setStorageDataRows = (rowsDataSetter) => {
-      const defaultSetting = DEFAULT_CONFIGURATION;
+      let defaultSetting = DEFAULT_CONFIGURATION;
       defaultSetting.rowsData = rowsDataSetter;
       defaultSetting.rowsAmount = rowsDataSetter.length;
+      console.log('original', DEFAULT_CONFIGURATION)
+      console.log('setter', defaultSetting)
       setStorageData(defaultSetting)
       setLocalStorageData(defaultSetting);
     }
 
-    const buttonDisableHandler = () => (
-      localStorageData ? localStorageData.rowsAmount : DEFAULT_CONFIGURATION.rowsAmount 
-      >= configuration.maxCurrencyCalculationRows
-    )
-    
     const onSubmit = (formValue) => formValue;
     
     return (
