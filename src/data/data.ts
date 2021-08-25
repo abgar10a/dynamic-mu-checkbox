@@ -13,7 +13,7 @@ interface DataProvide {
 export const STORAGE_KEY_PREFIX = "CURRENCY_EXCHANGE_OBJECT_TYPE_FIELD";
 
 export const DEFAULT_CONFIGURATION = {
-  tableHeaders: ["Amount", "Currency"],
+  tableHeaders: ["Amount", "Currency", "Delete row"],
   rowsAmount: 1,
   rowsData: [
     {textFieldName: `prop1.amount`,

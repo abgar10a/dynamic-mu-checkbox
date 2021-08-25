@@ -7,12 +7,15 @@ import ForgeUI, {
     Head,
     Row,
     Cell,
+    Button
   } from "@forge/ui";
 import { formValueObjectTransform } from '../utils/utils';
 export const TableElement = ({dataProvider, currencyExchangeCourses, fieldValue}) => {
 
   const converted = formValueObjectTransform(fieldValue);
   converted.pop();
+
+  console.log(dataProvider);
 
 return <Table children>
     <Head children>
@@ -28,12 +31,12 @@ return <Table children>
           <TextField
             type='number'
             name={e.textFieldName}
-            label={e.textFieldLabel}
             placeholder={converted[i] && converted[i].amount ? converted[i].amount : e.textFieldplaceholder} 
           />
         </Cell>
         <Cell>
-          <Select label={e.selectItemLabel} name={e.selectItemName}>
+          <Select 
+            name={e.selectItemName}>
             {currencyExchangeCourses.map((element) => (
               <Option
                 defaultSelected={
@@ -44,6 +47,12 @@ return <Table children>
               />
             ))}
           </Select>
+        </Cell>
+        <Cell>
+          <Button
+            text='❌'
+            onClick={() => deleteRow(i)}
+          />
         </Cell>
       </Row>
     ))}

@@ -1,53 +1,60 @@
 import ForgeUI, {
-    CustomField,
-    Fragment,
-    Text,
-    useProductContext,
-    useState,
-    useEffect
-  } from "@forge/ui";
-  import api,{ storage } from '@forge/api';
-  import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
-  import { setOutcomeProps, currencyConversion, getCustomFieldContext } from '../utils/utils'
+  CustomField,
+  Fragment,
+  Text,
+  useProductContext,
+  useState
+} from "@forge/ui";
+import api,{ storage } from '@forge/api';
+import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
+import { setOutcomeProps, currencyConversion, getCustomFieldContext } from '../utils/utils'
 
 
-  export const View = () => {
-    const { extensionContext: { fieldValue, fieldId },
-      platformContext: { projectKey }
-    } = useProductContext();
+export const View = () => {
+  const { extensionContext: { fieldValue, fieldId },
+    platformContext: { projectKey }
+  } = useProductContext();
 
-    const setStorgaeData = async (projectConfig) => await storage.set(`${STORAGE_KEY_PREFIX}_${projectKey}`, projectConfig);
-    const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`) || DEFAULT_CONFIGURATION);
+  const setStorageData = async (projectConfig) => await storage.set(`${STORAGE_KEY_PREFIX}_${projectKey}`, projectConfig);
+  const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`) || DEFAULT_CONFIGURATION);
 
-    const [localStorageData] = useState(getStorageData());
-    const [customFieldContext, setCustomFieldContext] = useState(async () => await getCustomFieldContext(fieldId) || DEFAULT_CONTEXT_CONFIG);
-    const [{configuration: {provision, currencyExchangeCourses}}] = customFieldContext;
-    const [customFieldContextFormValues] = useState(async () => await setCustomFieldContextFormValues(fieldValue));
-    const {userCurrency: {converted, currency, convertedProvision}} = customFieldContextFormValues;
+  const [localStorageData, setLocalStorageData] = useState(setStorageData());
+  const [customFieldContext] = useState(getCustomFieldContext(fieldId));
+  let [{configuration}] = customFieldContext;
 
-  async function setCustomFieldContextFormValues(formValue) {
-    if(!!formValue) {
-      const outcome = await setOutcomeProps(localStorageData ? localStorageData.rowsAmount : DEFAULT_CONFIGURATION.rowsAmount, formValue);
-      currencyConversion(outcome, provision, currencyExchangeCourses);
-      return outcome;
-    } else return {}
-  };
+  console.log(localStorageData);
 
-    return (
-      <CustomField>
-        <Fragment>
-          {converted ? (
-            <Text>Total money: {converted} {currency}</Text>
-          ) : (
-            <Text>No values yet</Text>
-          )}
-           {convertedProvision ? (
-            <Text>Net summ: {convertedProvision} {currency}</Text>
-          ) : (
-            null
-          )}
-        </Fragment>
-      </CustomField>
-    );
-  };
+  if(!configuration) {
+    configuration = DEFAULT_CONTEXT_CONFIG.configuration
+    getStorageData(DEFAULT_CONFIGURATION);
+  }
+  const [customFieldContextFormValues] = useState(setCustomFieldContextFormValues(fieldValue));
+
+async function setCustomFieldContextFormValues(formValue) {
+  if(!!formValue) {
+    const outcome = await setOutcomeProps(localStorageData.rowsAmount, formValue);
+    currencyConversion(outcome, 
+      configuration.provision, 
+      configuration.currencyExchangeCourses);
+    return outcome;
+  } else return {}
+};
+
+  return (
+    <CustomField>
+      <Fragment>
+        {customFieldContextFormValues && customFieldContextFormValues.userCurrency ? (
+          <Text>Total money: {customFieldContextFormValues.userCurrency.converted} {customFieldContextFormValues.userCurrency.currency}</Text>
+        ) : (
+          <Text>No values yet</Text>
+        )}
+         {customFieldContextFormValues && customFieldContextFormValues.userCurrency ? (
+          <Text>Net summ: {customFieldContextFormValues.userCurrency.convertedProvision} {customFieldContextFormValues.userCurrency.currency}</Text>
+        ) : (
+          null
+        )}
+      </Fragment>
+    </CustomField>
+  );
+};
   

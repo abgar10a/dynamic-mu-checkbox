@@ -8,7 +8,6 @@ import ForgeUI, {
     Head,
     Text,
     useState,
-    useEffect
   } from "@forge/ui";
   import { DEFAULT_CONTEXT_CONFIG } from '../data/data';
   import { getCustomFieldContext, validateMaxRowsAmount } from '../utils/utils';
@@ -19,13 +18,9 @@ import ForgeUI, {
     const [customFieldContext] = useState(getCustomFieldContext(fieldId));
     let [{configuration}] = customFieldContext;
 
-
     if(!configuration) {
       configuration = DEFAULT_CONTEXT_CONFIG.configuration
     }
-
-    console.log(configuration);
-    console.log(getCustomFieldContext(fieldId));
 
     const onSubmit = (formData) => {
       validateMaxRowsAmount(formData);
