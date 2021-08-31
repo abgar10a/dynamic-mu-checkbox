@@ -12,8 +12,7 @@ import ForgeUI, {
 import { formValueObjectTransform } from '../utils/utils';
 export const TableElement = ({dataProvider, currencyExchangeCourses, fieldValue, deleteRow}) => {
 
-  const converted = formValueObjectTransform(fieldValue);
-  converted.pop();
+  const converted = formValueObjectTransform(fieldValue).slice(0, -1);
 
 return <Table children>
     <Head children>
@@ -27,28 +26,31 @@ return <Table children>
       <Row children >
         <Cell>
           <TextField
+            isRequired={true}
             type='number'
             name={e.textFieldName}
             placeholder={converted[i] && converted[i].amount ? converted[i].amount : e.textFieldplaceholder} 
           />
         </Cell>
         <Cell>
-          <Select 
+          <Select
+            isRequired={true} 
             name={e.selectItemName}>
             {currencyExchangeCourses.map((element) => (
               <Option
-                defaultSelected={
-                  !!(element.label === ((converted[i] && converted[i].currency) ? converted[i].currency.value : false))
-                }
-                label={element.label}
-                value={element.label}
+              defaultSelected={
+                !!(element.label === ((converted[i] && converted[i].currency) ? converted[i].currency.value : false))
+              }
+              label={element.label}
+              value={element.label}
               />
             ))}
           </Select>
         </Cell>
         <Cell>
           <Button
-            text='❌'
+            appearance='danger'
+            text='Delete'
             onClick={() => deleteRow(i)}
           />
         </Cell>

@@ -6,7 +6,7 @@ modules:
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-countries-icon.svg
       type: object
       formatter:
-        expression: "`${value.currency}`"
+        expression: "`${value.currencySummary.amount} ${value.currencySummary.currency}`"
       readOnly: false
       function: main
       edit:
@@ -30,7 +30,11 @@ modules:
           prop5:
             amount: number
             currency: string
-          currency: 
+          currencySummary:
+            amount: 
+              type: number
+              searchAlias: Amount
+            currency:
               type: string
               searchAlias: Currency
   function:

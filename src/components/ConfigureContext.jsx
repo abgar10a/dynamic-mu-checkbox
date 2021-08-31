@@ -24,32 +24,18 @@ import ForgeUI, {
 
     const onSubmit = (formData) => {
       validateMaxRowsAmount(formData);
+
+      const formDataCurrencyExchangeCourses = configuration.currencyExchangeCourses.map(e => ({
+        label: e.label,
+        exchangeValue: +formData[e.label]
+      }))
+
+      
       return {
         configuration: {
           provision: +formData.provision,
           maxCurrencyCalculationRows: +formData.maxRowsAmount,
-          currencyExchangeCourses: [
-            {
-              label: "USD",
-              exchangeValue: +formData.USD,
-            },
-            {
-              label: "EUR",
-              exchangeValue: +formData.EUR,
-            },
-            {
-              label: "GBP",
-              exchangeValue: +formData.GBP,
-            },
-            {
-              label: "PLN",
-              exchangeValue: +formData.PLN,
-            },
-            {
-              label: "CHF",
-              exchangeValue: +formData.CHF,
-            },
-          ],
+          currencyExchangeCourses: formDataCurrencyExchangeCourses
         },
       };
     };
@@ -81,7 +67,7 @@ import ForgeUI, {
                     name={e.label}
                     label={e.label}
                     placeholder={e.curencyValue}
-                    defaultValue={e.exchangeValue && e.exchangeValue}
+                    defaultValue={e.exchangeValue}
                   />
                 </Cell>
               </Row>

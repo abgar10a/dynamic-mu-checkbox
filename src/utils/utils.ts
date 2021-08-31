@@ -1,5 +1,5 @@
 import api,{ route } from '@forge/api';
-import { DEFAULT_CONTEXT_CONFIG, maxRowsAmounts } from './../data/data';
+import { maxRowsAmounts } from './../data/data';
 
 
 interface  UserValuesProps {

@@ -19,7 +19,7 @@ import ForgeUI, {
         platformContext: { projectKey }
     } = useProductContext();
 
-    const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`));
+    const getStorageData = async () => await storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`);
     const setStorageData = async (projectConfig) => await storage.set(`${STORAGE_KEY_PREFIX}_${projectKey}`, projectConfig);
 
     const [localStorageData, setLocalStorageData] = useState(getStorageData());
@@ -51,13 +51,10 @@ import ForgeUI, {
       const rowsData = setDataProviderRows(1);
       setStorageDataRows(rowsData);
     }
-
     const setStorageDataRows = (rowsDataSetter) => {
       let defaultSetting = DEFAULT_CONFIGURATION;
       defaultSetting.rowsData = rowsDataSetter;
       defaultSetting.rowsAmount = rowsDataSetter.length;
-      console.log('original', DEFAULT_CONFIGURATION)
-      console.log('setter', defaultSetting)
       setStorageData(defaultSetting)
       setLocalStorageData(defaultSetting);
     }
@@ -66,7 +63,7 @@ import ForgeUI, {
     
     return (
       <CustomFieldEdit onSubmit={onSubmit} header="Edit">
-        <Text>Rows: {localStorageData.rowsAmount}/{configuration.maxCurrencyCalculationRows}</Text>
+        <Text>Available fields: {localStorageData.rowsAmount}/{configuration.maxCurrencyCalculationRows}</Text>
         <TableElement 
           dataProvider={localStorageData ? localStorageData : DEFAULT_CONFIGURATION}
           currencyExchangeCourses={configuration.currencyExchangeCourses}
@@ -79,19 +76,15 @@ import ForgeUI, {
               disabled={localStorageData.rowsAmount >= configuration.maxCurrencyCalculationRows} 
               onClick={() => addRow()}
             />
-            <Button 
-              text='Reset'  
-              appearance='danger' 
-              onClick={() => deleteAllRows()}
-            />
         </ButtonSet>
         
         <SelectElement
+          required='true'
           dataProvider={localStorageData ? localStorageData : DEFAULT_CONFIGURATION}
           currencyExchangeCourses={configuration.currencyExchangeCourses}
-          userCurrency={fieldValue && fieldValue.currency} 
+          userCurrency={fieldValue && fieldValue.currencySummary.currency} 
         />
       </CustomFieldEdit>
-  
+      
     );
   };

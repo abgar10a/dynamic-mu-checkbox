@@ -28,7 +28,7 @@ export const View = () => {
   const [customFieldContextFormValues] = useState(setCustomFieldContextFormValues(fieldValue));
 
 async function setCustomFieldContextFormValues(formValue) {
-  if(!!formValue) {
+  if(formValue) {
     const outcome = await setOutcomeProps(localStorageData.rowsAmount, formValue);
     currencyConversion(outcome, 
       configuration.provision, 
