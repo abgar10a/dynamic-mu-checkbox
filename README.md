@@ -69,23 +69,6 @@ Once you have logged into the CLI (`forge login`), follow the steps below to ins
 2. Data structure used in the app is based on object data type provided by [jira:customField](https://developer.atlassian.com/platform/forge/manifest-reference/modules/#jira-custom-field--beta-_). Manifest contains *schema* and *formatter* from customField.
 3. A corresponding [function module](https://developer.atlassian.com/platform/forge/manifest-reference/#function)
 that implements the app context configuration.
-
-
-### Project structure
-
-![project-folder-structre](docs/images/project-folders-structre.png)
-
-* [src](.src) - main folder containing all the code
-* [src/utils/utils.ts](.src/utils/utils.ts) - folder containing addicional funcions
-* [src/components](.src/components) - folder containing all the independent elements of the app
-* * [src/components/View.jsx](.src/components/View.jsx) - responsible for displaying field in the issue view
-* * [src/components/Select.jsx](.src/components/Select.jsx) - dropdown element for choosing the currency 
-* * [src/components/Edit.jsx](.src/components/Edit.jsx) - based on customFieldEdit. Edits customField data.
-* * [src/components/Table.jsx](.src/components/Table.jsx) - based on Table from ForgeUI. Display table element with inputs and addicional options.
-* * [src/components/ConfigureContext.jsx](.src/components/ConfigureContext.jsx) - contains config context window
-* [src/index.jsx](./src/index.jsx) - contains the main logic and UI elements of the app.
-* [src/data/data.ts](./src/data/data.ts) - contains default configurations (default edit, view settings, placeholders etc.)
-
 ## Modules used in the app
 
 - [`CustomField`](https://developer.atlassian.com/platform/forge/ui-kit-components/custom-field/) component
@@ -96,8 +79,6 @@ that implements the app context configuration.
 - [`Table`](https://developer.atlassian.com/platform/forge/ui-components/table) component
 - [`useState`](https://developer.atlassian.com/platform/forge/ui-hooks-reference/#usestate)
 - [`useProductContext`](https://developer.atlassian.com/platform/forge/ui-hooks-reference/#useproductcontext)
-
-The app uses the [storage api](https://developer.atlassian.com/platform/forge/runtime-reference/storage-api/) to store app configuration.
 
 ## Contributions
 

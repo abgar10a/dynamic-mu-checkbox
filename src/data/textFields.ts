@@ -7,7 +7,7 @@ interface ViewComponentsText {
 
 export const viewComponentText: ViewComponentsText = {
   value: "Total money:",
-  valueWithConfig: "Nett summ:",
+  valueWithConfig: "Net sum:",
   noValues: "No values provided",
   noConfiguration: "No configuration found !"
 };

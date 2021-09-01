@@ -31,6 +31,7 @@ export const Edit = () => {
   }
   const {currencyExchangeCourses, maxCurrencyCalculationRows} = configuration;
   const currencies = currencyExchangeCourses.map((e) => e.label);
+  const userSummCurrency = fieldValue?.currencySummary?.currency;
 
   const onSubmit = (formValue) => {
 
@@ -104,11 +105,13 @@ export const Edit = () => {
 
       <Select
         isRequired={true}
-        label="Choose final currency"
+        label="Choose summary currency"
         name="currencySummary"
       >
         {currencies.map((e) => (
-          <Option label={e} value={e} />
+          <Option
+           defaultSelected={userSummCurrency === e } 
+           label={e} value={e} />
         ))}
       </Select>
     </CustomFieldEdit>
