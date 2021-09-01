@@ -1,90 +1,116 @@
 import ForgeUI, {
-    CustomFieldEdit,
-    useProductContext,
-    Button,
-    ButtonSet,
-    useState,
-    Text,
-  } from "@forge/ui";
-  import api,{ storage } from '@forge/api';
-  import { TableElement } from "./Table";
-  import { SelectElement } from './Select';
-  import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
-  import { getCustomFieldContext, setDataProviderRows } from './../utils/utils';
-  
-  export const Edit = () => {
+  CustomFieldEdit,
+  TextField,
+  useProductContext,
+  Select,
+  Option,
+  useState,
+  Text,
+  Button,
+  Table,
+  Head,
+  Cell,
+  Row,
+} from "@forge/ui";
+import { getCustomFieldContext, setOutcomeProps, currencyConversion } from "./../utils/utils";
+import {
+  DEFAULT_FIELD_VALUE,
+  DEFAULT_CONTEXT_CONFIG,
+  DEFAULT_CONFIGURATION,
+} from "../data/data";
 
-    const { 
-        extensionContext: { fieldValue, fieldId }, 
-        platformContext: { projectKey }
-    } = useProductContext();
+export const Edit = () => {
+  const {
+    extensionContext: { fieldValue, fieldId },
+  } = useProductContext();
+  const [customFieldContext] = useState(getCustomFieldContext(fieldId));
+  const [arrayFields, setArrayFields] = useState(Object.values(fieldValue || DEFAULT_FIELD_VALUE).slice(0,-1))
+  let [{configuration}] = customFieldContext;
+  if(!configuration) {
+    configuration = {...DEFAULT_CONTEXT_CONFIG};
+  }
+  const {currencyExchangeCourses, maxCurrencyCalculationRows} = configuration;
+  const currencies = currencyExchangeCourses.map((e) => e.label);
 
-    const getStorageData = async () => await storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`);
-    const setStorageData = async (projectConfig) => await storage.set(`${STORAGE_KEY_PREFIX}_${projectKey}`, projectConfig);
+  const onSubmit = (formValue) => {
 
-    const [localStorageData, setLocalStorageData] = useState(getStorageData());
-    const [customFieldContext] = useState(getCustomFieldContext(fieldId));
-    let [{configuration}] = customFieldContext;
-
-    if(!configuration) {
-      configuration = DEFAULT_CONTEXT_CONFIG.configuration
-    }
-
-    const addRow = () => {
-      let rowsSetter = localStorageData.rowsAmount;
-      if(localStorageData.rowsAmount >= configuration.maxCurrencyCalculationRows) { 
-        rowsSetter = localStorageData.rowsAmount;
-      } else {
-        rowsSetter = localStorageData.rowsAmount + 1;
-      }
-      const rowsData = setDataProviderRows(rowsSetter);
-      setStorageDataRows(rowsData);
-    }
-
-    const deleteRow = (index) => {
-      let localStorageCopy = localStorageData;
-      localStorageCopy.rowsData = localStorageCopy.rowsData.filter((e,i) => i !== index);
-      setLocalStorageData(localStorageCopy)
-    }
-
-    const deleteAllRows = () => {
-      const rowsData = setDataProviderRows(1);
-      setStorageDataRows(rowsData);
-    }
-    const setStorageDataRows = (rowsDataSetter) => {
-      let defaultSetting = DEFAULT_CONFIGURATION;
-      defaultSetting.rowsData = rowsDataSetter;
-      defaultSetting.rowsAmount = rowsDataSetter.length;
-      setStorageData(defaultSetting)
-      setLocalStorageData(defaultSetting);
-    }
-
-    const onSubmit = (formValue) => formValue;
-    
-    return (
-      <CustomFieldEdit onSubmit={onSubmit} header="Edit">
-        <Text>Available fields: {localStorageData.rowsAmount}/{configuration.maxCurrencyCalculationRows}</Text>
-        <TableElement 
-          dataProvider={localStorageData ? localStorageData : DEFAULT_CONFIGURATION}
-          currencyExchangeCourses={configuration.currencyExchangeCourses}
-          fieldValue={fieldValue ? fieldValue : {}}
-          deleteRow={deleteRow}
-        />
-        <ButtonSet>
-            <Button 
-              text='Add row' 
-              disabled={localStorageData.rowsAmount >= configuration.maxCurrencyCalculationRows} 
-              onClick={() => addRow()}
-            />
-        </ButtonSet>
-        
-        <SelectElement
-          required='true'
-          dataProvider={localStorageData ? localStorageData : DEFAULT_CONFIGURATION}
-          currencyExchangeCourses={configuration.currencyExchangeCourses}
-          userCurrency={fieldValue && fieldValue.currencySummary.currency} 
-        />
-      </CustomFieldEdit>
-      
-    );
+    const copy = JSON.parse(JSON.stringify(formValue))
+    const outcome = setOutcomeProps(maxCurrencyCalculationRows, copy);
+    const calculatedCurrency = currencyConversion(outcome, currencyExchangeCourses);
+    return calculatedCurrency;
   };
+
+  const addRow = () => {
+    arrayFields.push({
+      amount: undefined,
+      currency: undefined,
+    });
+    setArrayFields(arrayFields);
+  }
+
+  const deleteRow = (index) => {
+    let copy = arrayFields;
+    copy = arrayFields.filter((e,i) => i!==index);
+    setArrayFields(copy);
+  }
+
+  return (
+    <CustomFieldEdit onSubmit={onSubmit}>
+      <Text>
+        Available fields: {arrayFields.length}/{maxCurrencyCalculationRows}
+      </Text>
+      <Button
+        text="Add row"
+        disabled={arrayFields.length >= maxCurrencyCalculationRows}
+        onClick={() => addRow()}
+      />
+
+      <Table children>
+        <Head children>
+          {DEFAULT_CONFIGURATION.tableHeaders.map((e) => (
+            <Cell children>
+              <Text children>{e}</Text>
+            </Cell>
+          ))}
+        </Head>
+        {arrayFields.map((e, i) => (
+          <Row children>
+            <Cell>
+              <TextField
+                isRequired={true}
+                type="number"
+                name={`prop${i+1}.amount`}
+                placeholder="Provide cash amount"
+                defaultValue={e.amount}
+              />
+            </Cell>
+            <Cell>
+              <Select isRequired={true} name={`prop${i+1}.currency`} >
+                {currencies.map((element) => (
+                  <Option label={element} value={element} defaultSelected={element === e.currency}/>
+                ))}
+              </Select>
+            </Cell>
+            <Cell>
+              <Button
+                appearance="danger"
+                text="Delete"
+                onClick={() => deleteRow(i)}
+              />
+            </Cell>
+          </Row>
+        ))}
+      </Table>
+
+      <Select
+        isRequired={true}
+        label="Choose final currency"
+        name="currencySummary"
+      >
+        {currencies.map((e) => (
+          <Option label={e} value={e} />
+        ))}
+      </Select>
+    </CustomFieldEdit>
+  );
+};

@@ -1,9 +1,9 @@
-import ForgeUI, { render } from "@forge/ui";
-import { View } from "./components/View";
-import { Edit } from "./components/Edit";
-import { ConfigureContext } from "./components/ConfigureContext";
+import ForgeUI, {render} from "@forge/ui";
 
+import {View} from "./components/view";
+import {Edit} from "./components/edit";
+import {ContextConfig} from "./components/ConfigureContext";
 
-export const runEdit = render(<Edit />);
-export const runView = render(<View />);
-export const runContextualConfiguration = render(<ConfigureContext />);
+export const runView = render(<View/>);
+export const runEdit = render(<Edit/>);
+export const runContextConfig = render(<ContextConfig/>);

@@ -43,10 +43,9 @@ modules:
     - key: edit
       handler: index.runEdit
     - key: configureContext
-      handler: index.runContextualConfiguration
+      handler: index.runContextConfig
 app:
   id: ari:cloud:ecosystem::app/cb3df0be-7eb8-427b-92c2-e5b799a921de
-  name: contextual-objet-type
 permissions:
   scopes:
     - storage:app

@@ -1,57 +1,46 @@
 import ForgeUI, {
-  CustomField,
-  Fragment,
-  Text,
   useProductContext,
-  useState
+  CustomField,
+  Text,
+  Fragment,
+  useState,
 } from "@forge/ui";
-import api,{ storage } from '@forge/api';
-import { DEFAULT_CONFIGURATION, DEFAULT_CONTEXT_CONFIG, STORAGE_KEY_PREFIX  } from '../data/data'
-import { setOutcomeProps, currencyConversion, getCustomFieldContext } from '../utils/utils'
-
+import api from "@forge/api";
+import { viewComponentText } from "../data/textFields";
+import { getCustomFieldContext } from "../utils/utils";
+import { DEFAULT_CONTEXT_CONFIG } from "../data/data";
 
 export const View = () => {
-  const { extensionContext: { fieldValue, fieldId },
-    platformContext: { projectKey }
+  const {
+    extensionContext: { fieldValue, fieldId },
   } = useProductContext();
-
-  const getStorageData = async () => await (storage.get(`${STORAGE_KEY_PREFIX}_${projectKey}`));
-  const setStorageData = async (projectConfig) => await storage.set(`${STORAGE_KEY_PREFIX}_${projectKey}`, projectConfig);
-
-  const [localStorageData, setLocalStorageData] = useState(getStorageData());
   const [customFieldContext] = useState(getCustomFieldContext(fieldId));
   let [{configuration}] = customFieldContext;
-
   if(!configuration) {
-    configuration = DEFAULT_CONTEXT_CONFIG.configuration
+    configuration = {...DEFAULT_CONTEXT_CONFIG};
   }
-  const [customFieldContextFormValues] = useState(setCustomFieldContextFormValues(fieldValue));
-
-async function setCustomFieldContextFormValues(formValue) {
-  if(formValue) {
-    const outcome = await setOutcomeProps(localStorageData.rowsAmount, formValue);
-    currencyConversion(outcome, 
-      configuration.provision, 
-      configuration.currencyExchangeCourses);
-    return outcome;
-  } else return {}
-};
+  const {provision} = configuration;
+    const { value, valueWithConfig, noValues, noConfiguration } = viewComponentText;
+    const currencySummaryAmount = fieldValue?.currencySummary?.amount;
+    const currencySummaryCurrency = fieldValue?.currencySummary?.currency;
+    const summaryAfterProvision = (currencySummaryAmount - (provision / 100) * currencySummaryAmount).toFixed(2);
 
   return (
     <CustomField>
       <Fragment>
-        {customFieldContextFormValues && customFieldContextFormValues.userCurrency ? (
-          <Text>Total money: {customFieldContextFormValues.userCurrency.converted} {customFieldContextFormValues.userCurrency.currency}</Text>
+        {currencySummaryAmount ? (
+          <Fragment>
+            <Text>
+              {value} {currencySummaryAmount} {currencySummaryCurrency}
+            </Text>
+            <Text>
+              {valueWithConfig} {summaryAfterProvision} {currencySummaryCurrency}
+            </Text>
+          </Fragment>
         ) : (
-          <Text>No values yet</Text>
-        )}
-         {customFieldContextFormValues && customFieldContextFormValues.userCurrency ? (
-          <Text>Net summ: {customFieldContextFormValues.userCurrency.convertedProvision} {customFieldContextFormValues.userCurrency.currency}</Text>
-        ) : (
-          null
+          <Text>{noValues}</Text>
         )}
       </Fragment>
     </CustomField>
-  );
+  )
 };
-  

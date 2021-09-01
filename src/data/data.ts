@@ -1,40 +1,31 @@
-interface DataProvide {
-  tableHeaders: string[];
-  rowsAmount: number;
-  rowsData: any[];
-  currencySummary: {
-    label: string;
-    name: string;
-    currencySummaryDefaultValueLabel: string;
-    currencySummaryDefaultValue: string;
-  };
+interface DefaultConfig {
+  tableHeaders: string[],
+  maxRowsAmounts: {
+      min: number,
+      max: number,
+  },
+  currencyPlaceholder: string,
 }
 
-export const STORAGE_KEY_PREFIX = "CURRENCY_EXCHANGE_OBJECT_TYPE_FIELD";
+interface DefaultContextConfig {
+      provision: number,
+      maxCurrencyCalculationRows: number,
+      currencyExchangeCourses: {
+          label: string,
+          exchangeValue: number
+      }[]
+}
 
-export const DEFAULT_CONFIGURATION = {
+export const DEFAULT_CONFIGURATION: DefaultConfig = {
   tableHeaders: ["Amount", "Currency", "Delete row"],
-  rowsAmount: 1,
-  rowsData: [
-    {textFieldName: `prop1.amount`,
-    textFieldLabel: `Amount`,
-    textFieldplaceholder: `Please provide cash amount`,
-    selectItemName: `prop1.currency`,
-    selectItemLabel: "Choose currency",
-    selectItemDefaultValueLabel: "PLN",
-    selectItemDefaultValue: "PLN",
+  maxRowsAmounts: {
+      min: 1,
+      max: 5
   },
-  ],
-  currencySummary: {
-    label: "Choose summary currency",
-    name: "currency",
-    currencySummaryDefaultValueLabel: "PLN",
-    currencySummaryDefaultValue: "PLN",
-  },
-};
+  currencyPlaceholder: 'Please provide cash amount'
+}
 
-export const DEFAULT_CONTEXT_CONFIG = {
-  configuration: {
+export const DEFAULT_CONTEXT_CONFIG: DefaultContextConfig = {
     provision: 0,
     maxCurrencyCalculationRows: 5,
     currencyExchangeCourses: [
@@ -59,10 +50,15 @@ export const DEFAULT_CONTEXT_CONFIG = {
         exchangeValue: 0.91,
       },
     ],
-  }
 }
 
-export const maxRowsAmounts = {
-  min: 1,
-  max: 5
+export const DEFAULT_FIELD_VALUE= {
+  prop1: {
+    amount: 0,
+    currency: "PLN"
+  },
+  currencySummary: {
+    amount: 0,
+    currency: "PLN"
+  },
 };
