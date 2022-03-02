@@ -48,5 +48,4 @@ app:
   id: ari:cloud:ecosystem::app/f88cff74-5607-4a88-940a-52abf7b029b0
 permissions:
   scopes:
-    - storage:app
-    - manage:jira-configuration
+    - read:custom-field-contextual-configuration:jira
