@@ -12,7 +12,7 @@ import { DEFAULT_CONTEXT_CONFIG, DEFAULT_CONFIGURATION } from "../data/data";
 import { validateMaxRowsAmount } from "../utils/utils";
 export const ContextConfig = () => {
   const {
-    extensionContext: { configuration = {...DEFAULT_CONTEXT_CONFIG} },
+    extensionContext: { configuration = { ...DEFAULT_CONTEXT_CONFIG } },
   } = useProductContext();
   const {
     maxRowsAmounts: { min, max },
@@ -20,7 +20,9 @@ export const ContextConfig = () => {
 
   const onSubmit = (formData) => {
     formData.maxCurrencyCalculationRows = validateMaxRowsAmount(
-      formData.maxCurrencyCalculationRows, min, max
+      formData.maxCurrencyCalculationRows,
+      min,
+      max
     );
     const formDataCurrencyExchangeCourses =
       configuration.currencyExchangeCourses.map((e) => ({
@@ -32,7 +34,7 @@ export const ContextConfig = () => {
         provision: +formData.provision,
         maxCurrencyCalculationRows: +formData.maxCurrencyCalculationRows,
         currencyExchangeCourses: formDataCurrencyExchangeCourses,
-      }
+      },
     };
   };
 
@@ -50,14 +52,14 @@ export const ContextConfig = () => {
         label="Maximum amount of currency"
         defaultValue={configuration.maxCurrencyCalculationRows}
       />
-      <Table children>
-        <Head children>
+      <Table>
+        <Head>
           <Cell>
-            <Text children>Value compared to USD</Text>
+            <Text>Value compared to USD</Text>
           </Cell>
         </Head>
         {configuration.currencyExchangeCourses.map((e) => (
-          <Row children>
+          <Row>
             <Cell>
               <TextField
                 name={e.label}

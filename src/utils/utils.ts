@@ -16,7 +16,7 @@ async function requestJira(fieldId) {
   let transformedResponseJson;
   const response = await api
     .asUser()
-    .requestJira(route`/rest/api/2/app/field/${fieldId}/context/configuration`);
+    .requestJira(route`/rest/api/3/app/field/${fieldId}/context/configuration`);
   try {
     transformedResponseJson = await response.json();
   } catch (e) {

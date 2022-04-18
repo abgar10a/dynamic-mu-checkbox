@@ -31,7 +31,7 @@ modules:
             amount: number
             currency: string
           currencySummary:
-            amount: 
+            amount:
               type: number
               searchAlias: Amount
             currency:
@@ -45,8 +45,7 @@ modules:
     - key: configureContext
       handler: index.runContextConfig
 app:
-  id: ari:cloud:ecosystem::app/cb3df0be-7eb8-427b-92c2-e5b799a921de
+  id: ari:cloud:ecosystem::app/f88cff74-5607-4a88-940a-52abf7b029b0
 permissions:
   scopes:
-    - storage:app
-    - manage:jira-configuration
+    - read:custom-field-contextual-configuration:jira
