@@ -1,19 +1,22 @@
 {
-  "name": "forge-ui-starter",
+  "name": "forge-currency-exchange",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "private": true,
   "scripts": {
-    "lint": "./node_modules/.bin/eslint src/**/* || npm run --silent hook-errors",
+    "lint": "eslint . || npm run --silent hook-errors",
     "hook-errors": "echo '\\x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.\n' && exit 1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint": "8",
+    "eslint-plugin-react-hooks": "4"
   },
   "dependencies": {
     "@forge/api": "^3.2.0",
     "@forge/ui": "^1.11.0"
+  },
+  "engines": {
+    "node": "18.19.0"
   }
 }
