@@ -3,6 +3,8 @@
   "extends": [
     "config:base"
   ],
+  "groupName": "all dependencies",
+  "groupSlug": "all",
   "branchPrefix": "issue/renovate/",
   "rangeStrategy": "bump",
   "rebaseWhen": "behind-base-branch",
@@ -10,7 +12,7 @@
   "prHourlyLimit": 0,
   "timezone": "Australia/Sydney",
   "schedule": [
-    "after 10am on Wednesday"
+    "before 4am on the first day of the month"
   ],
   "packageRules": [
     {
@@ -20,6 +22,8 @@
       ]
     },
     {
+      "groupName": "all dependencies",
+      "groupSlug": "all",    
       "matchPackagePatterns": [
         "@forge/",
         "@atlaskit/"
