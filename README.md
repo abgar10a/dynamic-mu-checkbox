@@ -88,3 +88,4 @@ Contributions to Currency Exchange are welcome! Please see [CONTRIBUTING.md](CON
 
 Copyright (c) 2021 Atlassian and others.
 Apache 2.0 licensed, see [LICENSE](LICENSE) file.
+"# dynamic-mu-checkbox" 
