@@ -66,6 +66,17 @@ export const formValueObjectTransform = (formValues) => {
     return Object.values(formValues);
 };
 
+export const createDefaultOption = (option: any) => {
+  return {
+    position: option?.position || "",
+    label: option?.label || "",
+    relatedField: option?.relatedField || "",
+    isChecked: option?.isChecked || false,
+    required: option?.required || false,
+    disabled: option?.disabled || false,
+  };
+}
+
 const findChoosenCurrency = (selectItemLabel, currencyExchangeCourses) => (
     currencyExchangeCourses.find( (element) => element.label === selectItemLabel)
 );

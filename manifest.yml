@@ -1,42 +1,55 @@
 modules:
   jira:customFieldType:
-    - key: forge-currency-exchange
-      name: Currency Exchange
-      description: Custom field type.
+    - key: dynamic-mu-checkbox
+      name: 1Dynamic Checkbox
+      description: Custom checkbox field type.
       icon: https://developer.atlassian.com/platform/forge/images/icons/issue-countries-icon.svg
       type: object
       formatter:
-        expression: "`${value.currencySummary.amount} ${value.currencySummary.currency}`"
+        expression: "`${value.checkboxSummary.selected} selected`"
       readOnly: false
       function: main
+      inlineEditable: true
       edit:
         function: edit
       contextConfig:
         function: configureContext
+        title: Context config
       schema:
         properties:
-          prop1:
-            amount: number
-            currency: string
-          prop2:
-            amount: number
-            currency: string
-          prop3:
-            amount: number
-            currency: string
-          prop4:
-            amount: number
-            currency: string
-          prop5:
-            amount: number
-            currency: string
-          currencySummary:
-            amount:
-              type: number
-              searchAlias: Amount
-            currency:
+          items:
+            type: array
+            items:
+              type: object
+              properties:
+                label:
+                  type: string
+                isChecked:
+                  type: boolean
+                relatedField:
+                  type: string
+                required:
+                  type: boolean
+          checkboxSummary:
+            type: object
+            properties:
+              selected:
+                type: number
+      configuration:
+        properties:
+          options:
+            type: array
+            items:
               type: string
-              searchAlias: Currency
+
+  jira:adminPage:
+    - key: configurePage
+      function: configPage
+      title: Configure
+      useAsConfig: true
+      # resolver:
+      #   function: configPage
+
   function:
     - key: main
       handler: index.runView
@@ -44,9 +57,26 @@ modules:
       handler: index.runEdit
     - key: configureContext
       handler: index.runContextConfig
+    - key: configPage
+      handler: index.runConfigPage
 app:
   runtime:
-    name: nodejs18.x
+    name: nodejs20.x
+  id: ari:cloud:ecosystem::app/d8276e8e-579e-4e34-a81c-8ca978976725
 permissions:
   scopes:
+    - manage:jira-configuration
+    - write:jira-work
+    - read:jira-work
+    - manage:jira-webhook
+    - read:audit-log:jira
+    - read:field:jira
+    - write:field:jira
+    - write:field.option:jira
+    - write:field-configuration-scheme:jira
+    - manage:jira-project
+    - read:project:jira
+    - write:project:jira
+    - read:project.property:jira
+    - storage:app
     - read:custom-field-contextual-configuration:jira

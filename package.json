@@ -1,22 +1,25 @@
 {
-  "name": "forge-currency-exchange",
+  "name": "dynamic-mu-checkbox",
   "version": "1.0.0",
   "main": "index.js",
   "license": "Apache-2.0",
   "private": true,
   "scripts": {
     "lint": "eslint . || npm run --silent hook-errors",
-    "hook-errors": "echo '\\x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.\n' && exit 1"
+    "hook-errors": "echo '\\x1b[31mThe build failed because a Forge UI hook is being used incorrectly. Forge UI hooks follow the same rules as React Hooks but have their own API definitions. See the Forge documentation for details on how to use Forge UI hooks.\n' && exit 1",
+    "deploydev:forge": "forge deploy --environment development && forge install --upgrade --environment development"
   },
   "devDependencies": {
     "eslint": "8",
-    "eslint-plugin-react-hooks": "4"
+    "eslint-plugin-react-hooks": "4",
+    "file-loader": "^6.2.0"
   },
   "dependencies": {
-    "@forge/api": "^3.8.0",
+    "@atlaskit/textfield": "^6.7.0",
+    "@forge/api": "^4.1.2",
     "@forge/ui": "^1.11.1"
   },
   "engines": {
-    "node": "18.19.0"
+    "node": "20.18.0"
   }
 }

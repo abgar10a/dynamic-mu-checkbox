@@ -1,56 +1,42 @@
-interface DefaultConfig {
-  tableHeaders: string[],
-  maxRowsAmounts: {
-      min: number,
-      max: number,
-  },
-  currencyPlaceholder: string,
-}
+// interface DefaultConfig {
+//   tableHeaders: string[],
+//   maxRowsAmounts: {
+//       min: number,
+//       max: number,
+//   },
+//   currencyPlaceholder: string,
+// }
+
+// interface DefaultContextConfig {
+//       provision: number,
+//       maxCurrencyCalculationRows: number,
+//       currencyExchangeCourses: {
+//           label: string,
+//           exchangeValue: number
+//       }[]
+// }
 
 interface DefaultContextConfig {
-      provision: number,
-      maxCurrencyCalculationRows: number,
-      currencyExchangeCourses: {
-          label: string,
-          exchangeValue: number
-      }[]
+  options: {
+    position: string,
+    label: string,
+    relatedField: string,
+    isChecked: boolean,
+    required: boolean,
+    disabled: boolean
+  }[]
 }
 
-export const DEFAULT_CONFIGURATION: DefaultConfig = {
-  tableHeaders: ["Amount", "Currency", "Delete row"],
-  maxRowsAmounts: {
-      min: 1,
-      max: 5
-  },
-  currencyPlaceholder: 'Please provide cash amount'
-}
+export const optionsTableHeaders = ["Position", "Text", "Order", "Actions"];
+export const configTableHeaders = ["Option", "Related field", "Required", "Actions"];
 
-export const DEFAULT_CONTEXT_CONFIG: DefaultContextConfig = {
-    provision: 0,
-    maxCurrencyCalculationRows: 5,
-    currencyExchangeCourses: [
-      {
-        label: "USD",
-        exchangeValue: 1,
-      },
-      {
-        label: "EUR",
-        exchangeValue: 0.84,
-      },
-      {
-        label: "GBP",
-        exchangeValue: 0.72,
-      },
-      {
-        label: "PLN",
-        exchangeValue: 3.86,
-      },
-      {
-        label: "CHF",
-        exchangeValue: 0.91,
-      },
-    ],
-}
+// export const DEFAULT_CONFIGURATION: DefaultConfig = {
+//   tableHeaders: ["Position", "Text", "Order", "Move to position", "Actions"]
+// }
+
+// export const DEFAULT_CONTEXT_CONFIG: DefaultContextConfig = {
+
+// }
 
 export const DEFAULT_FIELD_VALUE= {
   prop1: {
